@@ -1,0 +1,19 @@
+:root{
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#475569;
+  --border:#e7e9f3;
+  --shadow:0 16px 40px rgba(2,6,23,.08);
+  --radius:16px;
+}
+
+body{ background:var(--bg); color:var(--text); }
+.ks-container{ max-width:1160px; margin:0 auto; padding:18px 22px; }
+
+.ks-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}

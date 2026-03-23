@@ -1,0 +1,67 @@
+/* Kanban Pipeline */
+.kanban-wrap{ padding: 12px 0 22px; }
+.kanban{
+  display:grid;
+  grid-template-columns: repeat(6, minmax(240px, 1fr));
+  gap: 14px;
+  overflow-x:auto;
+  padding-bottom: 8px;
+}
+.kcol{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow: var(--shadow);
+  min-height: 480px;
+  display:flex;
+  flex-direction:column;
+}
+.khead{
+  padding:12px 12px 10px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.khead .ttl{ font-weight:1000; }
+.khead .cnt{
+  font-weight:1000;
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(124,58,237,.25);
+  background: rgba(124,58,237,.10);
+  color: var(--brand);
+}
+.klist{
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+}
+.kcard{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:10px 10px;
+  box-shadow: 0 10px 24px rgba(2,6,23,.06);
+  cursor: grab;
+}
+.kcard:active{ cursor: grabbing; }
+.kname{ font-weight:1000; margin-bottom:4px; }
+.kmeta{ color:var(--muted); font-size:12px; line-height:1.45; }
+.kdrop{
+  outline: 2px dashed rgba(124,58,237,.25);
+  outline-offset: 6px;
+}
+.ktools{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top: 14px;
+}
+.ktools select{ max-width: 420px; }
+@media (max-width: 980px){
+  .kanban{ grid-template-columns: repeat(6, 82vw); }
+}

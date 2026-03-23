@@ -1,0 +1,35 @@
+{
+    "name": "app/ats",
+    "type": "wordpress-theme",
+    "autoload": {
+        "psr-4": {
+            "App\\Ats\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Beatriz Gasparoto",
+            "email": "*@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "htmlburger/carbon-fields": "^3.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.9",
+        "wp-coding-standards/wpcs": "^3.2",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
+        "phpcompatibility/php-compatibility": "^9.3"
+    },
+    "scripts": {
+        "lint": "phpcs --standard=phpcs.xml src",
+        "clean": "vendor/bin/phpcbf --standard=phpcs.xml --extensions=php --ignore=vendor,node_modules .",
+        "build": "composer install --no-dev --optimize-autoloader"
+    },
+    "config": {
+        "allow-plugins": {
+        "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
