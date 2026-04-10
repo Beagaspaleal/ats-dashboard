@@ -8,105 +8,112 @@
 use App\Ats\Controllers\Job;
 use App\Ats\Helpers\Table;
 
-get_header();
+get_header(
+	null,
+	array(
+		'page_title' => 'Vagas',
+	)
+);
+
 $totals = Job::get_jobs_count_by_status();
 $jobs = get_posts([
-    'post_type' => 'jobs',
-    'post_status' => 'publish',
-    'numberposts' => -1,
-    'fields' => 'ids'
+	'post_type' => 'jobs',
+	'post_status' => 'publish',
+	'numberposts' => -1,
+	'fields' => 'ids'
 ]);
 ?>
 
-<div class="ks-container">
-  <section class="ck-hero">
-    <div class="ck-kicker">GESTÃO DE VAGAS</div>
-    <h1 class="ck-title">Vagas</h1>
-    <p class="ck-sub">Tela para criar vagas, atualizar status e acompanhar o volume de posições abertas e fechadas.</p>
+<div class="ats-container">
+	<section class="ats-page-header">
+		<div>
+			<div class="ats-page-header__eyebrow">Gestão de vagas</div>
+			<h1 class="ats-page-header__title">Vagas</h1>
+			<p class="ats-page-header__description">
+				Cadastre, acompanhe status e mantenha o processo organizado.
+			</p>
+		</div>
 
-    <div class="ck-cta">
-      <a class="ck-btn primary" href="#nova-vaga" id="btn-job" >+ Nova vaga</a>
-      <a class="ck-btn" href="/candidatos">Candidatos</a>
-      <a class="ck-btn" href="/pipeline">Pipeline</a>
-    </div>
+		<div class="ats-page-header__actions">
+			<a class="ats-btn" href="#nova-vaga" id="btn-job">+ Nova vaga</a>
+			<a class="ats-btn ats-btn--secondary" href="/candidatos">Candidatos</a>
+			<a class="ats-btn ats-btn--secondary" href="/pipeline">Pipeline</a>
+		</div>
+	</section>
 
-    <div class="vagas-kpi-grid">
-      <div class="vagas-kpi-card">
-        <div class="num"><?php echo $totals['aberta']; ?></div>
-        <div class="lbl">Vagas abertas</div>
-      </div>
+	<section class="ats-kpi-grid">
+		<article class="ats-kpi">
+			<div class="ats-kpi__value"><?php echo esc_html( (string) $totals['aberta'] ); ?></div>
+			<div class="ats-kpi__label">Vagas abertas</div>
+		</article>
 
-      <div class="vagas-kpi-card">
-        <div class="num"><?php echo $totals['process']; ?></div>
-        <div class="lbl">Vagas em Processo</div>
-      </div>
+		<article class="ats-kpi">
+			<div class="ats-kpi__value"><?php echo esc_html( (string) $totals['process'] ); ?></div>
+			<div class="ats-kpi__label">Vagas em processo</div>
+		</article>
 
-      <div class="vagas-kpi-card">
-        <div class="num"><?php echo $totals['on_hold']; ?></div>
-        <div class="lbl">Vagas on hold</div>
-      </div>
+		<article class="ats-kpi">
+			<div class="ats-kpi__value"><?php echo esc_html( (string) $totals['on_hold'] ); ?></div>
+			<div class="ats-kpi__label">Vagas on hold</div>
+		</article>
 
-      <div class="vagas-kpi-card">
-        <div class="num"><?php echo $totals['fechada']; ?></div>
-        <div class="lbl">Vagas fechadas</div>
-      </div>
-    </div>
-  </section>
+		<article class="ats-kpi">
+			<div class="ats-kpi__value"><?php echo esc_html( (string) $totals['fechada'] ); ?></div>
+			<div class="ats-kpi__label">Vagas fechadas</div>
+		</article>
+	</section>
+
+	<section class="ats-card" style="margin-top: 24px;">
+		<div class="ats-card__body">
+			<div class="ats-toolbar">
+				<div>
+					<h2 class="ats-card__title">Lista de vagas</h2>
+					<p class="ats-card__description">Cadastro interno, sem portal público.</p>
+				</div>
+			</div>
+
+			<div class="ats-table-wrap">
+				<table class="ats-table">
+					<thead>
+						<tr>
+							<th>Título</th>
+							<th>Salário</th>
+							<th>Status</th>
+							<th>Criada em</th>
+							<th>Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $jobs as $value ) : ?>
+							<tr>
+								<td class="ats-table__cell-strong"><?php echo esc_html( get_the_title( $value ) ); ?></td>
+								<td><?php echo esc_html( (string) get_post_meta( $value, '_salary', true ) ); ?></td>
+								<td>
+									<select class="job-state">
+										<?php foreach ( Table::jobs_state() as $k => $v ) : ?>
+											<option value="<?php echo esc_attr( $k ); ?>" <?php selected( $k, get_post_meta( $value, '_state', true ) ); ?>>
+												<?php echo esc_html( $v ); ?>
+											</option>
+										<?php endforeach; ?>
+									</select>
+								</td>
+								<td><?php echo esc_html( get_the_date( 'd/m/Y H:i', $value ) ); ?></td>
+								<td>
+									<a class="ats-btn btn-save-job" data-id="<?php echo esc_attr( (string) $value ); ?>" href="#">
+										Salvar
+									</a>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="ats-table__footer">
+				Total de vagas: <?php echo esc_html( (string) count( $jobs ) ); ?>
+			</div>
+		</div>
+	</section>
 </div>
 
-<div class="ks-container mt-3">
-  <div class="ks-card p-3">
-      <div style="display:flex;justify-content:space-between;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:12px;">
-        <div>
-          <h3 style="margin:0;">Lista de vagas</h3>
-          <div class="text-muted" style="margin-top:4px;font-size:13px;">Cadastro interno, sem portal público.</div>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Título</th>
-              <th>Salário</th>
-              <th>Status</th>
-              <th>Criada em</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach( $jobs as $value ) { ?>
-              <tr>
-                <td class="fw-semibold"><?php echo get_the_title($value); ?></td>
-                <td><?php echo get_post_meta($value, '_salary', true); ?></td>
-                <td>
-                  <select class="job-state">
-                    <?php foreach ( Table::jobs_state() as $k => $v ) {
-                      $selected = $k == get_post_meta($value, '_state', true) ? 'selected' : '';
-                    ?>
-                      <option value="<?php echo $k ?>" <?php echo $selected; ?>>
-                        <?php echo $v; ?>
-                      </option>
-                    <?php } ?>
-                  </select>
-                </td>
-                <td><?php echo get_the_date('d/m/Y H:i', $value); ?></td>
-                <td>
-                  <a class="ck-btn primary btn-save-job" data-id="<?php echo $value ?>" href="#">
-                    Salvar
-                  </a>
-                </td>
-              </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="text-muted" style="margin-top:12px;font-size:13px;">
-        Total de vagas: 0
-      </div>
-  </div>
-</div>
-
-<?php
-get_footer();
+<?php get_footer(); ?>
